@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedPlex MDCAT - Respiration Complete</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a56db;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --light: #f8fafc;
+            --dark: #1e3a8a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --background: #f0f9ff;
+            --card-bg: #ffffff;
+            --text-primary: #1e3a8a;
+            --text-secondary: #4b5563;
+            --border-radius: 5px;
+            --shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+            --compact-spacing: 3px;
+        }
+
+        .dark-mode {
+            --primary: #3b82f6;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --light: #1e293b;
+            --dark: #f1f5f9;
+            --background: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            font-size: 8.1px;
+            line-height: 1.1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4.86px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #1a56db);
+            color: white;
+            padding: 6.48px;
+            border-radius: var(--border-radius);
+            margin-bottom: 6.48px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            animation: pulse 15s infinite linear;
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 4.32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo h1 {
+            font-size: 0.972rem;
+            font-weight: 800;
+            margin-bottom: 1.62px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo p {
+            font-weight: 500;
+            font-size: 0.486rem;
+            opacity: 0.9;
+        }
+
+        .header-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-content h1 {
+            font-size: 0.648rem;
+            margin-bottom: 4.32px;
+            color: #ffd700;
+        }
+
+        .header-content p {
+            font-size: 0.486rem;
+            line-height: 1.1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 15.12px;
+            height: 15.12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            position: absolute;
+            top: 6.48px;
+            right: 6.48px;
+            z-index: 10;
+        }
+
+        .menu-toggle span {
+            width: 15.12px;
+            height: 1.62px;
+            background: white;
+            border-radius: 1.62px;
+            transition: var(--transition);
+            position: relative;
+            transform-origin: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(3.24px, 3.24px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(4.32px, -4.32px);
+        }
+
+        /* Navigation Styles */
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 6.48px;
+            position: relative;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4.86px;
+        }
+
+        .nav-header h2 {
+            font-size: 0.729rem;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: none;
+            width: 25.92px;
+            height: 12.96px;
+            border-radius: 12.96px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 1.62px;
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle span {
+            width: 9.72px;
+            height: 9.72px;
+            border-radius: 50%;
+            background: var(--primary);
+            position: absolute;
+            transition: var(--transition);
+            left: 1.62px;
+        }
+
+        .theme-toggle.dark span {
+            left: calc(100% - 11.34px);
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 2.43px;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            padding-bottom: 4.86px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+            padding: 4.05px 4.86px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 4.86px;
+            box-shadow: var(--shadow);
+            margin-bottom: 6.48px;
+            transition: var(--transition);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4.86px;
+            padding-bottom: 4.05px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 2.43px;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.43px;
+            padding: 2.43px 4.86px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #0da271;
+            transform: translateY(-1px);
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 4.86px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 4.86px;
+        }
+
+        .card:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 2.43px 6.48px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+            margin-bottom: 4.05px;
+            padding-bottom: 4.05px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 0.567rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            gap: 4.86px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .grid-4 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 9.72px 0;
+            margin-top: auto;
+            font-size: 0.486rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 6.48px;
+            margin-top: 6.48px;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6.48px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MCQ Card Styles */
+        .mcq-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .mcq-info {
+            flex-grow: 1;
+            margin-bottom: 4.86px;
+        }
+
+        .mcq-id {
+            font-weight: 700;
+            font-size: 0.567rem;
+            color: var(--primary);
+            margin-bottom: 1.62px;
+        }
+
+        .mcq-subject {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.43px;
+        }
+
+        .mcq-chapter {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.43px;
+            font-weight: 600;
+        }
+
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 4.05px 6.48px;
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .start-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(64.8px, 1fr));
+            gap: 4.05px;
+            margin-bottom: 4.86px;
+        }
+
+        .stat-item {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 4.05px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 0.729rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.405rem;
+            color: var(--text-secondary);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Explanation Section Styles */
+        .explanation-section {
+            margin-bottom: 12.15px;
+            padding: 9.72px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .explanation-header {
+            display: flex;
+            align-items: center;
+            gap: 6.48px;
+            margin-bottom: 6.48px;
+            padding-bottom: 4.86px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .explanation-icon {
+            width: 24.3px;
+            height: 24.3px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.81rem;
+        }
+
+        .explanation-title {
+            font-size: 0.729rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .explanation-content {
+            font-size: 0.567rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .explanation-content h4 {
+            font-size: 0.648rem;
+            margin: 6.48px 0 3.24px;
+            color: var(--primary);
+        }
+
+        .explanation-content p {
+            margin-bottom: 4.86px;
+        }
+
+        .explanation-content ul, .explanation-content ol {
+            margin-left: 16.2px;
+            margin-bottom: 6.48px;
+        }
+
+        .explanation-content li {
+            margin-bottom: 2.43px;
+        }
+
+        .mechanism-diagram {
+            text-align: center;
+            margin: 9.72px 0;
+            padding: 6.48px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+        }
+
+        .key-concept {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3.24px solid var(--primary);
+            padding: 6.48px;
+            margin: 6.48px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .key-concept-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3.24px;
+            font-size: 0.567rem;
+        }
+
+        /* MCQ Detail Styles */
+        .mcq-detail-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            margin-bottom: 9.72px;
+            box-shadow: var(--shadow);
+        }
+
+        .mcq-question {
+            font-size: 0.648rem;
+            font-weight: 600;
+            margin-bottom: 6.48px;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .mcq-options {
+            margin-bottom: 9.72px;
+        }
+
+        .mcq-option {
+            padding: 4.05px 6.48px;
+            margin-bottom: 3.24px;
+            border-radius: var(--border-radius);
+            background: var(--light);
+            font-size: 0.567rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 2.43px solid transparent;
+        }
+
+        .mcq-option:hover {
+            background: rgba(26, 86, 219, 0.05);
+        }
+
+        .mcq-option.selected {
+            border-left-color: var(--primary);
+            background: rgba(26, 86, 219, 0.1);
+        }
+
+        .mcq-option.correct {
+            border-left-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .mcq-option.incorrect {
+            border-left-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .mcq-explanation {
+            margin-top: 9.72px;
+            padding: 6.48px;
+            border-radius: var(--border-radius);
+            background: var(--light);
+            font-size: 0.486rem;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .mcq-explanation.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .explanation-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4.05px;
+            font-size: 0.567rem;
+        }
+
+        .mcq-actions {
+            display: flex;
+            gap: 4.86px;
+            margin-top: 6.48px;
+        }
+
+        /* Progress Tracking */
+        .progress-section {
+            margin-top: 9.72px;
+            padding: 6.48px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4.86px;
+        }
+
+        .progress-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .progress-stats {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 6.48px;
+            background: #e5e7eb;
+            border-radius: 3.24px;
+            overflow: hidden;
+            margin-bottom: 4.86px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3.24px;
+            transition: width 0.5s ease;
+        }
+
+        /* Welcome Animation */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1e3a8a, #1a56db);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+            padding: 12.15px;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9.72px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4.86px 16.2px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-content h2 {
+            font-size: 1.458rem;
+            margin-bottom: 9.72px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 2.5s infinite;
+        }
+
+        .welcome-content p {
+            font-size: 0.648rem;
+            margin-bottom: 12.15px;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .welcome-logo {
+            font-size: 2.025rem;
+            margin-bottom: 12.15px;
+            color: #ffd700;
+            text-shadow: 0 0 12.15px rgba(255, 215, 0, 0.5);
+            animation: pulseWelcome 1.5s infinite;
+        }
+
+        @keyframes pulseWelcome {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 12.15px;
+            right: 12.15px;
+            background: #25D366;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.053rem;
+            box-shadow: 0 2.43px 6.48px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3.24px 8.1px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Key Points Section */
+        .key-points-section {
+            margin: 12.15px 0;
+            padding: 9.72px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .key-points-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 6.48px;
+            display: flex;
+            align-items: center;
+            gap: 4.86px;
+        }
+
+        .key-points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 4.86px;
+        }
+
+        .key-point-item {
+            background: var(--light);
+            padding: 4.86px;
+            border-radius: var(--border-radius);
+            font-size: 0.486rem;
+            line-height: 1.3;
+            border-left: 2.43px solid var(--accent);
+        }
+
+        /* PDF Text Highlight */
+        .pdf-quote {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 3.24px solid #ffd700;
+            padding: 6.48px;
+            margin: 6.48px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-style: italic;
+        }
+
+        .pdf-quote-title {
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 3.24px;
+            font-size: 0.567rem;
+        }
+
+        /* Table Styles */
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 9.72px 0;
+            font-size: 0.486rem;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .config-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 4.86px;
+            text-align: center;
+        }
+
+        .config-table td {
+            padding: 4.05px;
+            border: 0.81px solid rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .config-table tr:nth-child(even) {
+            background: var(--light);
+        }
+
+        .config-table tr:hover {
+            background: rgba(26, 86, 219, 0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .grid-3, .grid-4 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .main-nav {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow);
+                padding: 4.86px;
+                z-index: 100;
+                width: 129.6px;
+                display: none;
+            }
+            
+            .main-nav.active {
+                display: flex;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 4.05px;
+            }
+            
+            header {
+                padding: 4.86px;
+            }
+            
+            .logo h1 {
+                font-size: 0.81rem;
+            }
+            
+            .panel {
+                padding: 4.86px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 2.43px;
+            }
+            
+            .panel-actions {
+                flex-direction: column;
+            }
+            
+            .welcome-content {
+                padding: 9.72px;
+                margin: 6.48px;
+            }
+            
+            .welcome-content h2 {
+                font-size: 1.053rem;
+            }
+            
+            .welcome-content p {
+                font-size: 0.567rem;
+            }
+            
+            .welcome-logo {
+                font-size: 1.62rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 3.24px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 1.62px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Animation -->
+    <div class="welcome-overlay" id="welcome-overlay">
+        <div class="welcome-content scale-in">
+            <div class="welcome-logo">
+                <i class="fas fa-lungs"></i>
+            </div>
+            <h2>MedPlex MDCAT Preparation Academy</h2>
+            <p>Complete Respiration Module with 80 MCQs based on Textbook Theory</p>
+            <button class="btn btn-primary" id="start-btn" style="padding: 4.86px 9.72px; font-size: 0.648rem;">
+                Start Learning <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://whatsapp.com/channel/0029VbBeueg0QeajGumGWb0f" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div class="container">
+        <header>
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="logo">
+                <h1>MedPlex MDCAT Preparation Academy</h1>
+                <p>Respiration - Complete Module Based on Textbook Theory</p>
+            </div>
+            
+            <div class="header-content">
+                <h1>Human Respiratory System: Complete Textbook Analysis</h1>
+                <p>80 MCQs with detailed explanations covering all 13 pages of Respiration content</p>
+            </div>
+        </header>
+
+        <div class="nav-container">
+            <div class="nav-header">
+                <h2>Complete Respiration Topics</h2>
+                <button class="theme-toggle" id="theme-toggle">
+                    <span></span>
+                </button>
+            </div>
+            
+            <div class="main-nav" id="main-nav">
+                <button class="nav-btn active" data-tab="resp-basics">
+                    <i class="fas fa-lungs"></i>
+                    <span>Respiration Basics</span>
+                </button>
+                <button class="nav-btn" data-tab="resp-surfaces">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Respiratory Surfaces</span>
+                </button>
+                <button class="nav-btn" data-tab="human-system">
+                    <i class="fas fa-user-md"></i>
+                    <span>Human Respiratory System</span>
+                </button>
+                <button class="nav-btn" data-tab="nose-nasal">
+                    <i class="fas fa-head-side-cough"></i>
+                    <span>Nose & Nasal Cavities</span>
+                </button>
+                <button class="nav-btn" data-tab="trachea-lungs">
+                    <i class="fas fa-wind"></i>
+                    <span>Trachea & Lungs</span>
+                </button>
+                <button class="nav-btn" data-tab="gas-exchange">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Gas Exchange</span>
+                </button>
+                <button class="nav-btn" data-tab="gas-transport">
+                    <i class="fas fa-tint"></i>
+                    <span>Gas Transport</span>
+                </button>
+                <button class="nav-btn" data-tab="all-mcqs">
+                    <i class="fas fa-question-circle"></i>
+                    <span>All 80 MCQs</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <div class="stat-item">
+                <div class="stat-value" id="total-mcqs">80</div>
+                <div class="stat-label">Total MCQs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="completed-mcqs">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="textbook-mcqs">40</div>
+                <div class="stat-label">Textbook Based</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="application-mcqs">40</div>
+                <div class="stat-label">Application Based</div>
+            </div>
+        </div>
+
+        <!-- Respiration Basics Tab -->
+        <div class="tab-content active" id="resp-basics-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-lungs"></i>
+                    </div>
+                    <div class="explanation-title">Respiration Fundamentals & Energy Requirements</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 1):</div>
+                        <div class="reference-text">"Energy is the most important requirement of life. All systems require energy to work. The various processes carried out by body, such as movement, growth and reproduction, all require the expenditure of energy. In animals this energy can be obtained only from the food they eat. In the processes of cellular respiration this food energy is made available for the body activities."</div>
+                    </div>
+                    
+                    <h4>Core Concept of Cellular Respiration</h4>
+                    <p>According to textbook theory, <strong>cellular respiration</strong> is the fundamental process through which organisms convert biochemical energy from nutrients into adenosine triphosphate (ATP), and then release waste products. This process is essential for all <strong>life processes</strong> including movement, growth, and reproduction.</p>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: ATP Production</div>
+                        <p>The textbook emphasizes that energy from food becomes available through cellular respiration. This involves three main stages: Glycolysis, Krebs Cycle, and Electron Transport Chain. Each glucose molecule yields approximately 36-38 ATP molecules, providing energy for all cellular activities.</p>
+                    </div>
+                    
+                    <h4>Types of Respiration</h4>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Definition</th>
+                                <th>Location</th>
+                                <th>ATP Yield</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Aerobic Respiration</td>
+                                <td>With oxygen, complete oxidation</td>
+                                <td>Mitochondria</td>
+                                <td>36-38 ATP</td>
+                            </tr>
+                            <tr>
+                                <td>Anaerobic Respiration</td>
+                                <td>Without oxygen, partial oxidation</td>
+                                <td>Cytoplasm</td>
+                                <td>2 ATP</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Respiration Basics
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">Energy is the most fundamental requirement for all life processes</div>
+                    <div class="key-point-item">Cellular respiration converts food energy to usable ATP</div>
+                    <div class="key-point-item">All body systems require energy to function</div>
+                    <div class="key-point-item">Movement, growth, and reproduction all expend energy</div>
+                    <div class="key-point-item">Animals obtain energy only from the food they eat</div>
+                    <div class="key-point-item">ATP is the energy currency of the cell</div>
+                    <div class="key-point-item">Aerobic respiration produces 36-38 ATP per glucose</div>
+                    <div class="key-point-item">Anaerobic respiration produces only 2 ATP per glucose</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Respiratory Surfaces Tab -->
+        <div class="tab-content" id="resp-surfaces-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="explanation-title">Properties of Respiratory Surfaces</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 1):</div>
+                        <div class="reference-text">"The area where gaseous exchange with the environment actually takes place is called the respiratory surface. Gaseous exchange takes place in all organisms by the physical process of diffusion. For effective diffusion the respiratory surface must have the following properties."</div>
+                    </div>
+                    
+                    <h4>Five Essential Properties</h4>
+                    <ol>
+                        <li><strong>Permeability:</strong> Must allow gases to pass through easily</li>
+                        <li><strong>Thin Structure:</strong> Must be thin (≤1mm) because diffusion is only efficient over short distances</li>
+                        <li><strong>Large Surface Area:</strong> Must provide sufficient area for gas exchange according to metabolic needs</li>
+                        <li><strong>Good Blood Supply:</strong> Required to maintain concentration gradients</li>
+                        <li><strong>Ventilation Mechanism:</strong> Necessary to maintain steep diffusion gradients</li>
+                    </ol>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: Diffusion Limitation</div>
+                        <p>The textbook explicitly states: "diffusion is only efficient over distance of 1 mm or less." This physical limitation explains why specialized respiratory systems evolved in complex organisms.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Respiratory Surfaces
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">Respiratory surface is where actual gas exchange occurs</div>
+                    <div class="key-point-item">Gas exchange occurs through diffusion</div>
+                    <div class="key-point-item">Respiratory surfaces must be permeable to gases</div>
+                    <div class="key-point-item">Thickness must be ≤1mm for efficient diffusion</div>
+                    <div class="key-point-item">Large surface area increases gas exchange capacity</div>
+                    <div class="key-point-item">Good blood supply maintains concentration gradients</div>
+                    <div class="key-point-item">Ventilation maintains diffusion gradients</div>
+                    <div class="key-point-item">Diffusion efficiency decreases with distance</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Human Respiratory System Tab -->
+        <div class="tab-content" id="human-system-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="explanation-title">Human Respiratory System Structure</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 1):</div>
+                        <div class="reference-text">"Respiratory system provides the fundamental ability to breath. This system consists of nose and nasal cavities, pharynx, larynx, trachea, bronchi, bronchioles, and alveoli in the lungs."</div>
+                    </div>
+                    
+                    <h4>Complete Respiratory Pathway</h4>
+                    <p>The human respiratory system follows this sequence:</p>
+                    <ol>
+                        <li><strong>Nose and Nasal Cavities:</strong> Initial air entry, filtration, warming, humidification</li>
+                        <li><strong>Pharynx:</strong> Common passage for air and food</li>
+                        <li><strong>Larynx:</strong> Voice production and airway protection</li>
+                        <li><strong>Trachea:</strong> Main airway with cartilage support</li>
+                        <li><strong>Bronchi:</strong> Branching airways to each lung</li>
+                        <li><strong>Bronchioles:</strong> Small airways without cartilage</li>
+                        <li><strong>Alveoli:</strong> Site of gas exchange</li>
+                    </ol>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: Functional Divisions</div>
+                        <p>The respiratory system can be divided into: <strong>Conducting Zone</strong> (nose to terminal bronchioles - transports air) and <strong>Respiratory Zone</strong> (respiratory bronchioles to alveoli - gas exchange).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Human Respiratory System
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">System provides fundamental ability to breathe</div>
+                    <div class="key-point-item">Includes nose, pharynx, larynx, trachea, bronchi, bronchioles, alveoli</div>
+                    <div class="key-point-item">Conducting zone transports and conditions air</div>
+                    <div class="key-point-item">Respiratory zone is where gas exchange occurs</div>
+                    <div class="key-point-item">Nose is only externally visible part</div>
+                    <div class="key-point-item">System progresses from large to small airways</div>
+                    <div class="key-point-item">Total cross-sectional area increases dramatically in alveoli</div>
+                    <div class="key-point-item">Cartilage prevents airway collapse during inspiration</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nose and Nasal Cavities Tab -->
+        <div class="tab-content" id="nose-nasal-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-head-side-cough"></i>
+                    </div>
+                    <div class="explanation-title">Nose and Nasal Cavities Structure & Function</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 1):</div>
+                        <div class="reference-text">"The nose is only externally visible part of the respiratory system. The structure of a human nose is composed of bones, cartilage and fibro fatty tissues. The external feature of a nose depends upon the ethmoid bone and the cartilages."</div>
+                    </div>
+                    
+                    <h4>Defense Mechanisms</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 1):</div>
+                        <div class="reference-text">"Hairs are present inside the nostrils that help in the filtration of air. Hence, nose hair serve as a defense mechanism against the harmful pathogens and solid particulate matter present in the air."</div>
+                    </div>
+                    
+                    <h4>Air Conditioning Functions</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 1-2):</div>
+                        <div class="reference-text">"Both the nostrils and nasal cavities are lined by mucous membranes along with cilia. The mucous membrane secretes a sticky substance called mucus... Cilia move the trapped substances to the pharynx for their removal. Underneath the mucous membrane, there are blood capillaries that help to warm the air to about 30°C."</div>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: Mucociliary Escalator</div>
+                        <p>Cilia beat in coordinated waves to move mucus with trapped particles toward the pharynx at 1-3 cm/hour, where it can be swallowed or expectorated. This is the body's first line of respiratory defense.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Nose & Nasal Cavities
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">Nose contains hyaline cartilage for support</div>
+                    <div class="key-point-item">Nasal hairs filter air as first defense</div>
+                    <div class="key-point-item">Mucous membranes line nasal cavities</div>
+                    <div class="key-point-item">Mucus traps particles and microorganisms</div>
+                    <div class="key-point-item">Cilia move trapped substances to pharynx</div>
+                    <div class="key-point-item">Blood capillaries warm air to about 30°C</div>
+                    <div class="key-point-item">Mucus helps moisten inspired air</div>
+                    <div class="key-point-item">Nose is only externally visible respiratory part</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trachea and Lungs Tab -->
+        <div class="tab-content" id="trachea-lungs-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div class="explanation-title">Trachea, Bronchi, and Lungs Structure</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 3):</div>
+                        <div class="reference-text">"The trachea is a cartilaginous and membranous tube that extends from the cricoids cartilage to the carina, and it is approximately 11 cm long... Its wall is stiffened by 16 to 20 characteristic horse shoe shape incomplete rings that open towards the back and are embedded in a dense connective tissue."</div>
+                    </div>
+                    
+                    <h4>Bronchial Structure</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 3):</div>
+                        <div class="reference-text">"The trachea divides into two stem bronchi, one each for the left and right lung. The right bronchus has a larger diameter, and is shorter than the left bronchus."</div>
+                    </div>
+                    
+                    <h4>Lung Structure</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 5):</div>
+                        <div class="reference-text">"Human have two lungs, a right and a left... The right lung represents 56% of the total lung volume and is composed of three lobes, a superior, middle, and inferior lobe. The left lung, smaller in volume because of the asymmetrical position of the heart, has only two lobes."</div>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: Pleural Membranes</div>
+                        <p>Each lung is encased in pleural membranes that protect the lungs, prevent air leakage into the thoracic cavity, and reduce friction during breathing movements.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Trachea & Lungs
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">Trachea is approximately 11 cm long</div>
+                    <div class="key-point-item">Trachea has 16-20 C-shaped cartilage rings</div>
+                    <div class="key-point-item">Right bronchus is shorter and wider than left</div>
+                    <div class="key-point-item">Right lung has 3 lobes, left lung has 2 lobes</div>
+                    <div class="key-point-item">Lungs are encased in pleural membranes</div>
+                    <div class="key-point-item">Right lung represents 56% of total lung volume</div>
+                    <div class="key-point-item">Left lung is smaller due to heart position</div>
+                    <div class="key-point-item">Pleura reduces friction during breathing</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gas Exchange Tab -->
+        <div class="tab-content" id="gas-exchange-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="explanation-title">Gas Exchange in Alveoli</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 4):</div>
+                        <div class="reference-text">"The bronchioles are located at the end of the bronchi and terminate in the alveoli... Eventually the terminal bronchioles open into small collections of air sacs known as alveoli, where the actual exchange of carbon dioxide and oxygen occur."</div>
+                    </div>
+                    
+                    <h4>Alveolar Structure</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 5):</div>
+                        <div class="reference-text">"The alveoli form the gas exchange surface. The wall of each alveolus is only 0.1 μm thick. On its outsides is a dense network of blood capillaries. Lining each alveolus is moist squamous epithelium."</div>
+                    </div>
+                    
+                    <h4>Surfactant Function</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 4):</div>
+                        <div class="reference-text">"Special cells in the alveolus wall secrete a detergent like chemical on to the inside lining of the alveolus. This is called a surfactant. It lowers the surface tension of the fluid layer lining the alveolus, and thereby reduces the amount of effort needed to breathe in and inflate the lungs."</div>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: Alveolar Statistics</div>
+                        <p>There are about 700 million alveoli in human lungs, providing approximately 70-90 m² of surface area for gas exchange - roughly the size of a tennis court!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Gas Exchange
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">Gas exchange occurs in alveoli</div>
+                    <div class="key-point-item">Alveolar wall is only 0.1 μm thick</div>
+                    <div class="key-point-item">Dense capillary network surrounds alveoli</div>
+                    <div class="key-point-item">About 700 million alveoli in human lungs</div>
+                    <div class="key-point-item">Total alveolar surface area is 70-90 m²</div>
+                    <div class="key-point-item">Surfactant reduces surface tension in alveoli</div>
+                    <div class="key-point-item">Surfactant reduces work of breathing</div>
+                    <div class="key-point-item">Alveoli are lined with moist squamous epithelium</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gas Transport Tab -->
+        <div class="tab-content" id="gas-transport-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="explanation-title">Gas Transport Mechanisms</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 8):</div>
+                        <div class="reference-text">"Like other materials, respiratory gases are also transported in various regions of the body by means of blood. The blood transports oxygen from the lungs to different tissues and carbon dioxide from tissues to the lungs."</div>
+                    </div>
+                    
+                    <h4>Oxygen Transport</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 8):</div>
+                        <div class="reference-text">"Most of the oxygen is transported from lungs to the tissues through haemoglobin. One haemoglobin molecule contains iron-containing. Hence molecules, and because of this, each haemoglobin molecule is capable of carrying up to four molecules of oxygen forming oxyhaemoglobin."</div>
+                    </div>
+                    
+                    <h4>Carbon Dioxide Transport</h4>
+                    <div class="pdf-quote">
+                        <div class="pdf-quote-title">Textbook Statement (Page 10):</div>
+                        <div class="reference-text">"Carbon dioxide is transported in the blood in three main ways i.e. in the form of bicarbonate ions, in the form of carbaminohaemoglobin and dissolved in plasma."</div>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">Key Concept: Chloride Shift</div>
+                        <p>The exchange of bicarbonate ions (HCO₃⁻) out of red blood cells for chloride ions (Cl⁻) into red blood cells maintains electrical neutrality and is called the chloride shift or Hamburger's phenomenon.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Section -->
+            <div class="key-points-section">
+                <div class="key-points-title">
+                    <i class="fas fa-key"></i> Key Points from Gas Transport
+                </div>
+                <div class="key-points-grid">
+                    <div class="key-point-item">Blood transports gases throughout body</div>
+                    <div class="key-point-item">Hemoglobin carries 4 oxygen molecules</div>
+                    <div class="key-point-item">Oxyhemoglobin is bright red in color</div>
+                    <div class="key-point-item">70% of CO₂ transported as bicarbonate ions</div>
+                    <div class="key-point-item">23% of CO₂ transported as carbaminohaemoglobin</div>
+                    <div class="key-point-item">7% of CO₂ dissolves directly in plasma</div>
+                    <div class="key-point-item">Chloride shift maintains ionic balance</div>
+                    <div class="key-point-item">Carbon dioxide transport depends on partial pressure</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All 80 MCQs Tab -->
+        <div class="tab-content" id="all-mcqs-tab">
+            <!-- Explanation Section -->
+            <div class="explanation-section fade-in">
+                <div class="explanation-header">
+                    <div class="explanation-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="explanation-title">Complete 80 MCQs from Respiration Textbook</div>
+                </div>
+                
+                <div class="explanation-content">
+                    <h4>Comprehensive MCQ Coverage</h4>
+                    <p>This section contains <strong>80 carefully crafted MCQs</strong> covering every concept from the Respiration textbook (Pages 1-13). Each question includes:</p>
+                    
+                    <ul>
+                        <li><strong>Textbook-Based Questions:</strong> Direct references to textbook content</li>
+                        <li><strong>Application Questions:</strong> Real-world scenarios and problem-solving</li>
+                        <li><strong>Conceptual Understanding:</strong> Deep understanding of physiological principles</li>
+                        <li><strong>Competition Level:</strong> MDCAT-style challenging questions</li>
+                    </ul>
+                    
+                    <div class="key-concept">
+                        <div class="key-concept-title">MCQ Categories Covered:</div>
+                        <ol>
+                            <li>Respiration Basics & Energy Requirements (10 MCQs)</li>
+                            <li>Respiratory Surfaces Properties (10 MCQs)</li>
+                            <li>Human Respiratory System Structure (10 MCQs)</li>
+                            <li>Nose & Nasal Cavities Functions (10 MCQs)</li>
+                            <li>Trachea, Bronchi & Lungs Anatomy (10 MCQs)</li>
+                            <li>Alveoli & Gas Exchange Mechanisms (10 MCQs)</li>
+                            <li>Oxygen Transport & Hemoglobin (10 MCQs)</li>
+                            <li>Carbon Dioxide Transport (10 MCQs)</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <div class="progress-title">Overall MCQs Progress</div>
+                            <div class="progress-stats"><span id="all-mcqs-completed">0</span>/80 completed</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="all-mcqs-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MCQs Section -->
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-question-circle"></i> Complete 80 MCQs from Respiration Textbook</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-all-mcqs">
+                            <i class="fas fa-sync-alt"></i> Refresh All
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-2" id="all-mcqs-container">
+                    <!-- All 80 MCQs will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MedPlex MDCAT Preparation Academy. All rights reserved.</p>
+                <p>Complete Respiration Module with 80 MCQs - Pages 1-13 Coverage</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Complete 80 MCQs Data
+        const allMCQs = [
+            // 1-10: Respiration Basics
+            {
+                id: 1,
+                question: "According to textbook theory, what is described as 'the most important requirement of life'?",
+                options: [
+                    "Water",
+                    "Energy",
+                    "Oxygen",
+                    "Food"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook explicitly states: 'Energy is the most important requirement of life.' This establishes energy as fundamental to all biological processes.",
+                    incorrect: {
+                        0: "Water is essential but not described as 'most important requirement'.",
+                        2: "Oxygen is needed for aerobic respiration but not the fundamental requirement.",
+                        3: "Food provides energy but isn't the requirement itself."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'Energy is the most important requirement of life'"
+            },
+            {
+                id: 2,
+                question: "Which processes require energy expenditure according to the textbook?",
+                options: [
+                    "Only voluntary movements",
+                    "Movement, growth, and reproduction",
+                    "Only cellular maintenance",
+                    "Only brain functions"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'The various processes carried out by body, such as movement, growth and reproduction, all require the expenditure of energy.'",
+                    incorrect: {
+                        0: "Includes both voluntary and involuntary processes.",
+                        2: "Includes more than just cellular maintenance.",
+                        3: "Includes all body processes, not just brain functions."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'movement, growth and reproduction, all require the expenditure of energy'"
+            },
+            {
+                id: 3,
+                question: "In animals, energy is obtained only from:",
+                options: [
+                    "Sunlight",
+                    "The food they eat",
+                    "Chemical reactions",
+                    "Thermal energy"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook clearly states: 'In animals this energy can be obtained only from the food they eat.'",
+                    incorrect: {
+                        0: "Animals cannot directly use sunlight for energy.",
+                        2: "Chemical reactions release energy but food is the source.",
+                        3: "Animals cannot directly convert thermal energy."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'In animals this energy can be obtained only from the food they eat'"
+            },
+            {
+                id: 4,
+                question: "Through which process is food energy made available for body activities?",
+                options: [
+                    "Digestion",
+                    "Absorption",
+                    "Cellular respiration",
+                    "Circulation"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'In the processes of cellular respiration this food energy is made available for the body activities.'",
+                    incorrect: {
+                        0: "Digestion breaks down food but doesn't release energy for use.",
+                        1: "Absorption transfers nutrients but doesn't release energy.",
+                        3: "Circulation transports but doesn't release energy."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'In the processes of cellular respiration this food energy is made available'"
+            },
+            {
+                id: 5,
+                question: "Which molecule serves as the direct energy currency for cellular work?",
+                options: [
+                    "Glucose",
+                    "ATP",
+                    "NADH",
+                    "FADH2"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "ATP (adenosine triphosphate) is the immediate energy currency that powers cellular work, while glucose, NADH, and FADH2 are energy carriers or substrates.",
+                    incorrect: {
+                        0: "Glucose is an energy source that gets converted to ATP.",
+                        2: "NADH carries electrons to electron transport chain.",
+                        3: "FADH2 is another electron carrier in respiration."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 6,
+                question: "The efficiency of cellular respiration in converting glucose to ATP is approximately:",
+                options: [
+                    "10-20%",
+                    "30-40%",
+                    "60-70%",
+                    "80-90%"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Cellular respiration is about 30-40% efficient, with the remaining energy released as heat. This efficiency is higher than most human-made machines.",
+                    incorrect: {
+                        0: "10-20% is too low for biological systems.",
+                        2: "60-70% exceeds biological efficiency limits.",
+                        3: "80-90% approaches theoretical maximum, not achieved biologically."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 7,
+                question: "Which process represents the COMPLETE oxidation of glucose?",
+                options: [
+                    "C₆H₁₂O₆ → 2C₃H₆O₃",
+                    "C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂",
+                    "C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O",
+                    "C₆H₁₂O₆ → 3C₂H₄O₂"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Complete aerobic respiration yields 6CO₂ and 6H₂O from glucose with oxygen. Other options show incomplete oxidation (fermentation) or incorrect stoichiometry.",
+                    incorrect: {
+                        0: "This represents lactic acid fermentation (incomplete).",
+                        1: "This represents alcoholic fermentation (incomplete).",
+                        3: "This stoichiometry is incorrect for any known respiration pathway."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 8,
+                question: "Anaerobic respiration yields less ATP than aerobic because:",
+                options: [
+                    "It uses different substrates",
+                    "It doesn't fully oxidize glucose",
+                    "It occurs in cytoplasm only",
+                    "It doesn't use electron carriers"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Anaerobic respiration stops at pyruvate/lactate, leaving most energy in waste products. Aerobic respiration fully oxidizes glucose to CO₂ and H₂O.",
+                    incorrect: {
+                        0: "Both use glucose as primary substrate.",
+                        2: "Location doesn't determine ATP yield; completeness of oxidation does.",
+                        3: "Anaerobic respiration uses NAD⁺/NADH as electron carrier."
+                    }
+                },
+                type: "logical"
+            },
+            {
+                id: 9,
+                question: "If cellular respiration is impaired, which life process would be affected FIRST?",
+                options: [
+                    "Long-term growth over months",
+                    "Voluntary movement within seconds",
+                    "Reproductive capacity over years",
+                    "Cell division"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Voluntary movement requires immediate ATP from cellular respiration. Growth and reproduction can use stored energy for longer periods.",
+                    incorrect: {
+                        0: "Growth can use stored energy reserves for longer periods.",
+                        2: "Reproduction has longer time frames for energy adaptation.",
+                        3: "Cell division can use stored ATP for some time."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 10,
+                question: "The textbook's statement implies that energy deficiency would first affect:",
+                options: [
+                    "Structural maintenance of bones",
+                    "Electrical signaling in neurons",
+                    "Thermoregulation in endotherms",
+                    "All systems equally as stated"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Since textbook says 'All systems require energy to work,' energy deficiency fundamentally affects all systems, though manifestations may appear at different times.",
+                    incorrect: {
+                        0: "While bones need energy for remodeling, nervous system might show effects sooner.",
+                        1: "Neurons have high energy demands but so do other systems.",
+                        2: "Thermoregulation is energy-intensive but not uniquely affected."
+                    }
+                },
+                type: "textbook"
+            },
+
+            // 11-20: Respiratory Surfaces
+            {
+                id: 11,
+                question: "What is defined as 'the area where gaseous exchange with the environment actually takes place'?",
+                options: [
+                    "Respiratory system",
+                    "Respiratory surface",
+                    "Alveolar membrane",
+                    "Gas exchange zone"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook defines: 'The area where gaseous exchange with the environment actually takes place is called the respiratory surface.'",
+                    incorrect: {
+                        0: "Respiratory system includes all structures, not just exchange area.",
+                        2: "Alveolar membrane is part of respiratory surface.",
+                        3: "Gas exchange zone is not the defined term."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'The area where gaseous exchange... is called the respiratory surface'"
+            },
+            {
+                id: 12,
+                question: "Gaseous exchange occurs through which physical process according to textbook?",
+                options: [
+                    "Osmosis",
+                    "Active transport",
+                    "Diffusion",
+                    "Facilitated diffusion"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Gaseous exchange takes place in all organisms by the physical process of diffusion.'",
+                    incorrect: {
+                        0: "Osmosis is for water, not gases.",
+                        1: "Active transport requires energy, not passive like gas exchange.",
+                        3: "Facilitated diffusion involves carriers, not needed for gases."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'Gaseous exchange takes place... by the physical process of diffusion'"
+            },
+            {
+                id: 13,
+                question: "Why must respiratory surfaces be thin according to textbook?",
+                options: [
+                    "To reduce metabolic cost",
+                    "Because diffusion is only efficient over 1mm or less",
+                    "To allow immune cell passage",
+                    "For structural flexibility"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'It must be thin for efficient diffusion, because diffusion is only efficient over distance of 1 mm or less.'",
+                    incorrect: {
+                        0: "Not mentioned as primary reason.",
+                        2: "Not mentioned as reason for thinness.",
+                        3: "Not mentioned as reason for thinness."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'diffusion is only efficient over distance of 1 mm or less'"
+            },
+            {
+                id: 14,
+                question: "Which property ensures sufficient gas exchange according to organism's need?",
+                options: [
+                    "Permeability",
+                    "Large surface area",
+                    "Good blood supply",
+                    "Ventilation mechanism"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states surfaces should 'possess a large surface area so that sufficient amount of gases are able to be exchanged according to the organism's need.'",
+                    incorrect: {
+                        0: "Permeability allows passage but doesn't determine capacity.",
+                        2: "Blood supply maintains gradient but not exchange capacity.",
+                        3: "Ventilation maintains gradient but not exchange capacity."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'should possess a large surface area so that sufficient amount of gases are able to be exchanged according to the organism's need'"
+            },
+            {
+                id: 15,
+                question: "What maintains a steep diffusion gradient across respiratory surfaces?",
+                options: [
+                    "Thin structure",
+                    "Good ventilation mechanism",
+                    "Permeable membrane",
+                    "Large surface area"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'There should be a good ventilation mechanism to maintain a steep diffusion gradient across the respiratory surface.'",
+                    incorrect: {
+                        0: "Thinness increases rate but doesn't maintain gradient.",
+                        2: "Permeability allows diffusion but doesn't maintain gradient.",
+                        3: "Large area increases capacity but doesn't maintain gradient."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'There should be a good ventilation mechanism to maintain a steep diffusion gradient'"
+            },
+            {
+                id: 16,
+                question: "The 1mm diffusion limit is based on which physical principle?",
+                options: [
+                    "Boyle's Law",
+                    "Fick's Law of Diffusion",
+                    "Henry's Law",
+                    "Laplace's Law"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Fick's Law states diffusion rate is inversely proportional to distance squared, explaining the 1mm limit.",
+                    incorrect: {
+                        0: "Boyle's Law relates pressure and volume.",
+                        2: "Henry's Law relates gas solubility and pressure.",
+                        3: "Laplace's Law relates pressure and surface tension."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 17,
+                question: "If diffusion distance doubles, diffusion time increases by:",
+                options: [
+                    "2 times",
+                    "4 times",
+                    "8 times",
+                    "16 times"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Diffusion time ∝ distance². Doubling distance gives 4× time (2² = 4).",
+                    incorrect: {
+                        0: "Linear relationship incorrect for diffusion.",
+                        2: "Cube relationship incorrect.",
+                        3: "Fourth power relationship incorrect."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 18,
+                question: "Which adaptation increases surface area WITHOUT compromising thinness?",
+                options: [
+                    "Adding more cell layers",
+                    "Folding or branching",
+                    "Increasing cell size",
+                    "Adding cartilage"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Folding/branching increases area while maintaining thin epithelial layers.",
+                    incorrect: {
+                        0: "More layers increase thickness.",
+                        2: "Larger cells may reduce surface area to volume ratio.",
+                        3: "Cartilage provides support but doesn't increase exchange area."
+                    }
+                },
+                type: "logical"
+            },
+            {
+                id: 19,
+                question: "Good blood supply primarily helps respiratory surfaces by:",
+                options: [
+                    "Providing nutrients to cells",
+                    "Maintaining concentration gradients",
+                    "Warming the surface",
+                    "Removing metabolic waste"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Blood supply quickly removes O₂ and brings CO₂, maintaining steep diffusion gradients.",
+                    incorrect: {
+                        0: "Secondary function, not primary for gas exchange.",
+                        2: "Warming occurs in nose but not primary function in gas exchange surfaces.",
+                        3: "Waste removal is secondary function."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 20,
+                question: "Which organism has the THINNEST respiratory surface relative to body size?",
+                options: [
+                    "Amoeba (cell membrane)",
+                    "Earthworm (skin)",
+                    "Fish (gills)",
+                    "Human (alveoli)"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Human alveoli are 0.1μm thick, much thinner than other options relative to organism size.",
+                    incorrect: {
+                        0: "Amoeba membrane is 7-8nm but organism is microscopic.",
+                        1: "Earthworm skin ~100μm, relatively thick.",
+                        2: "Fish gills ~10μm, thicker than alveoli."
+                    }
+                },
+                type: "application"
+            },
+
+            // 21-30: Human Respiratory System
+            {
+                id: 21,
+                question: "What does the respiratory system provide according to textbook?",
+                options: [
+                    "Energy production",
+                    "Fundamental ability to breath",
+                    "Voice production only",
+                    "Immunity against pathogens"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Respiratory system provides the fundamental ability to breath.'",
+                    incorrect: {
+                        0: "Energy production occurs in cells, not directly by respiratory system.",
+                        2: "Voice production is one function, not the primary one.",
+                        3: "Immunity is a secondary function, not the primary purpose."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'Respiratory system provides the fundamental ability to breath'"
+            },
+            {
+                id: 22,
+                question: "The human respiratory system consists of:",
+                options: [
+                    "Nose, trachea, and lungs only",
+                    "Nose, pharynx, larynx, trachea, bronchi, bronchioles, alveoli",
+                    "Mouth, esophagus, lungs",
+                    "Nose, sinuses, and alveolar ducts"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook lists: 'nose and nasal cavities, pharynx, larynx, trachea, bronchi, bronchioles, and alveoli in the lungs.'",
+                    incorrect: {
+                        0: "Incomplete list; missing several components.",
+                        2: "Esophagus is part of digestive system.",
+                        3: "Incomplete list; missing major components."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'This system consists of nose and nasal cavities, pharynx, larynx, trachea, bronchi, bronchioles, and alveoli in the lungs'"
+            },
+            {
+                id: 23,
+                question: "Which is the only externally visible part of the respiratory system?",
+                options: [
+                    "Mouth",
+                    "Nose",
+                    "Larynx",
+                    "Trachea"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'The nose is only externally visible part of the respiratory system.'",
+                    incorrect: {
+                        0: "Mouth is part of digestive system primarily.",
+                        2: "Larynx is internal in neck.",
+                        3: "Trachea is internal in thorax."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'The nose is only externally visible part of the respiratory system'"
+            },
+            {
+                id: 24,
+                question: "The conducting zone of respiratory system ends at:",
+                options: [
+                    "Trachea",
+                    "Primary bronchi",
+                    "Terminal bronchioles",
+                    "Alveoli"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Conducting zone (for air transport) ends at terminal bronchioles. Respiratory zone (for gas exchange) begins at respiratory bronchioles.",
+                    incorrect: {
+                        0: "Trachea is part of conducting zone but not the end.",
+                        1: "Primary bronchi are still conducting zone.",
+                        3: "Alveoli are in respiratory zone."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 25,
+                question: "Respiratory zone begins at:",
+                options: [
+                    "Trachea",
+                    "Primary bronchi",
+                    "Respiratory bronchioles",
+                    "Terminal bronchioles"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Respiratory bronchioles mark the beginning of the respiratory zone where some gas exchange can occur.",
+                    incorrect: {
+                        0: "Trachea is conducting zone only.",
+                        1: "Primary bronchi are conducting zone only.",
+                        3: "Terminal bronchioles are the end of conducting zone."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 26,
+                question: "Total cross-sectional area is largest in:",
+                options: [
+                    "Trachea",
+                    "Primary bronchi",
+                    "Bronchioles",
+                    "Alveoli"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Despite individual alveoli being tiny, there are about 700 million of them, creating massive total surface area (~70-90 m²).",
+                    incorrect: {
+                        0: "Trachea has small cross-sectional area.",
+                        1: "Primary bronchi have relatively small area.",
+                        2: "Bronchioles have more area than trachea but less than alveoli."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 27,
+                question: "Which structure prevents airway collapse during inspiration?",
+                options: [
+                    "Smooth muscle",
+                    "Cartilage",
+                    "Elastic fibers",
+                    "Mucous membrane"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Cartilage rings in trachea and plates in bronchi prevent collapse when intrathoracic pressure becomes negative during inspiration.",
+                    incorrect: {
+                        0: "Smooth muscle controls diameter but doesn't prevent collapse.",
+                        2: "Elastic fibers aid recoil but don't prevent collapse.",
+                        3: "Mucous membrane provides lining, not structural support."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 28,
+                question: "Gas exchange occurs primarily in:",
+                options: [
+                    "Trachea",
+                    "Bronchi",
+                    "Bronchioles",
+                    "Alveoli"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Alveoli are the primary site of gas exchange due to their thin walls and extensive capillary network.",
+                    incorrect: {
+                        0: "Trachea is for air conduction only.",
+                        1: "Bronchi conduct air but don't exchange gases.",
+                        2: "Bronchioles conduct air; only respiratory bronchioles allow minimal exchange."
+                    }
+                },
+                type: "textbook"
+            },
+            {
+                id: 29,
+                question: "The respiratory membrane consists of:",
+                options: [
+                    "Single layer of epithelial cells",
+                    "Alveolar epithelium and capillary endothelium only",
+                    "Multiple layers including surfactant, epithelium, basement membranes, endothelium",
+                    "Only capillary endothelium"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Respiratory membrane includes: surfactant layer, alveolar epithelium, epithelial basement membrane, interstitial space, capillary basement membrane, capillary endothelium.",
+                    incorrect: {
+                        0: "Multiple layers, not single.",
+                        1: "Missing several layers.",
+                        3: "Missing several layers."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 30,
+                question: "Which is NOT part of the upper respiratory tract?",
+                options: [
+                    "Nose",
+                    "Pharynx",
+                    "Larynx",
+                    "Trachea"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Trachea is part of lower respiratory tract. Upper respiratory tract includes nose, pharynx, and larynx.",
+                    incorrect: {
+                        0: "Nose is upper respiratory tract.",
+                        1: "Pharynx is upper respiratory tract.",
+                        2: "Larynx is upper respiratory tract."
+                    }
+                },
+                type: "conceptual"
+            },
+
+            // 31-40: Nose and Nasal Cavities
+            {
+                id: 31,
+                question: "What type of cartilage does the nose contain?",
+                options: [
+                    "Elastic cartilage",
+                    "Fibrocartilage",
+                    "Hyaline cartilage",
+                    "Articular cartilage"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Nose contains Hyaline cartilage'",
+                    incorrect: {
+                        0: "Elastic cartilage is in ear, epiglottis.",
+                        1: "Fibrocartilage is in intervertebral discs.",
+                        3: "Articular cartilage is in joints."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'Nose contains Hyaline cartilage'"
+            },
+            {
+                id: 32,
+                question: "What helps in filtration of air inside nostrils?",
+                options: [
+                    "Mucus only",
+                    "Cilia only",
+                    "Hairs",
+                    "Blood capillaries"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Hairs are present inside the nostrils that help in the filtration of air.'",
+                    incorrect: {
+                        0: "Mucus traps particles but hairs filter first.",
+                        1: "Cilia move mucus but don't filter.",
+                        3: "Capillaries warm air, don't filter."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'Hairs are present inside the nostrils that help in the filtration of air'"
+            },
+            {
+                id: 33,
+                question: "Nose hair serves as a defense mechanism against:",
+                options: [
+                    "Only bacteria",
+                    "Only viruses",
+                    "Harmful pathogens and solid particulate matter",
+                    "Only dust particles"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'nose hair serve as a defense mechanism against the harmful pathogens and solid particulate matter present in the air.'",
+                    incorrect: {
+                        0: "Includes pathogens AND particles.",
+                        1: "Includes pathogens AND particles.",
+                        3: "Includes pathogens too, not just dust."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'nose hair serve as a defense mechanism against the harmful pathogens and solid particulate matter'"
+            },
+            {
+                id: 34,
+                question: "What lines both nostrils and nasal cavities?",
+                options: [
+                    "Keratinized epithelium",
+                    "Mucous membranes along with cilia",
+                    "Smooth muscle layer",
+                    "Cartilage rings"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Both the nostrils and nasal cavities are lined by mucous membranes along with cilia.'",
+                    incorrect: {
+                        0: "Not keratinized; it's mucous membrane.",
+                        2: "Has ciliated epithelium, not just smooth muscle.",
+                        3: "Cartilage is in trachea, not lining nostrils."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'Both the nostrils and nasal cavities are lined by mucous membranes along with cilia'"
+            },
+            {
+                id: 35,
+                question: "The mucous membrane secretes:",
+                options: [
+                    "Enzymes",
+                    "Hormones",
+                    "A sticky substance called mucus",
+                    "Surfactant"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'The mucous membrane secretes a sticky substance called mucus.'",
+                    incorrect: {
+                        0: "Not enzymes primarily.",
+                        1: "Not hormones.",
+                        3: "Surfactant is in alveoli, not nasal cavity."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1: 'The mucous membrane secretes a sticky substance called mucus'"
+            },
+            {
+                id: 36,
+                question: "What moves trapped substances to the pharynx for removal?",
+                options: [
+                    "Hairs",
+                    "Blood flow",
+                    "Cilia",
+                    "Muscle contractions"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Cilia move the trapped substances to the pharynx for their removal.'",
+                    incorrect: {
+                        0: "Hairs trap but don't move substances.",
+                        1: "Blood doesn't move trapped substances.",
+                        3: "Not muscle contractions; ciliary action."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 1-2: 'Cilia move the trapped substances to the pharynx for their removal'"
+            },
+            {
+                id: 37,
+                question: "What helps warm the air to about 30°C?",
+                options: [
+                    "Hairs in nostrils",
+                    "Mucus secretion",
+                    "Blood capillaries underneath mucous membrane",
+                    "Cartilage in nose"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Underneath the mucous membrane, there are blood capillaries that help to warm the air to about 30°C.'",
+                    incorrect: {
+                        0: "Hairs filter, don't warm.",
+                        1: "Mucus moistens, doesn't warm significantly.",
+                        3: "Cartilage provides structure, doesn't warm air."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 2: 'Underneath the mucous membrane, there are blood capillaries that help to warm the air to about 30°C'"
+            },
+            {
+                id: 38,
+                question: "The mucus also helps in:",
+                options: [
+                    "Warming the air",
+                    "Moistening the air",
+                    "Killing bacteria",
+                    "Producing sounds"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'The mucus also helps in moistening the air.'",
+                    incorrect: {
+                        0: "Blood capillaries warm air, not mucus.",
+                        2: "Mucus traps but doesn't kill bacteria.",
+                        3: "Larynx produces sounds, not mucus."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 2: 'The mucus also helps in moistening the air'"
+            },
+            {
+                id: 39,
+                question: "Nasal conchae function to:",
+                options: [
+                    "Produce mucus",
+                    "Increase surface area for air conditioning",
+                    "Filter large particles",
+                    "Produce voice resonance"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Nasal conchae (turbinates) increase surface area for warming, humidifying, and filtering air.",
+                    incorrect: {
+                        0: "Mucus produced by goblet cells, not conchae.",
+                        2: "Hairs and mucus filter, conchae increase surface area.",
+                        3: "Sinuses contribute to resonance, not primarily conchae."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 40,
+                question: "The mucociliary escalator moves mucus at approximately:",
+                options: [
+                    "1-3 cm/hour",
+                    "10-30 cm/hour",
+                    "1-3 mm/hour",
+                    "10-30 mm/hour"
+                ],
+                correctAnswer: 0,
+                explanation: {
+                    correct: "Cilia move mucus at 1-3 cm/hour toward pharynx for removal.",
+                    incorrect: {
+                        1: "Too fast for ciliary movement.",
+                        2: "Too slow; it's centimeters per hour, not millimeters.",
+                        3: "Incorrect unit; should be cm/hour."
+                    }
+                },
+                type: "application"
+            },
+
+            // 41-50: Trachea and Lungs
+            {
+                id: 41,
+                question: "The trachea is approximately how long?",
+                options: [
+                    "5 cm",
+                    "11 cm",
+                    "20 cm",
+                    "30 cm"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'The trachea... is approximately 11 cm long.'",
+                    incorrect: {
+                        0: "Too short for adult trachea.",
+                        2: "Too long for trachea.",
+                        3: "Much too long for trachea."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 3: 'The trachea... is approximately 11 cm long'"
+            },
+            {
+                id: 42,
+                question: "Tracheal diameter from side to side is approximately:",
+                options: [
+                    "1-1.5 cm",
+                    "2-2.5 cm",
+                    "3-3.5 cm",
+                    "4-4.5 cm"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Its diameter from side to side is approximately 2 to 2.5 cm.'",
+                    incorrect: {
+                        0: "Too narrow for trachea.",
+                        2: "Too wide for trachea.",
+                        3: "Much too wide for trachea."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 3: 'Its diameter from side to side is approximately 2 to 2.5 cm'"
+            },
+            {
+                id: 43,
+                question: "How many cartilage rings stiffen the tracheal wall?",
+                options: [
+                    "10-12",
+                    "16-20",
+                    "22-26",
+                    "28-32"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Its wall is stiffened by 16 to 20 characteristic horse shoe shape incomplete rings.'",
+                    incorrect: {
+                        0: "Too few rings.",
+                        2: "Too many rings.",
+                        3: "Much too many rings."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 3: 'Its wall is stiffened by 16 to 20 characteristic horse shoe shape incomplete rings'"
+            },
+            {
+                id: 44,
+                question: "Which bronchus is shorter and wider?",
+                options: [
+                    "Right bronchus",
+                    "Left bronchus",
+                    "Both are equal",
+                    "Neither has difference"
+                ],
+                correctAnswer: 0,
+                explanation: {
+                    correct: "Textbook states: 'The right bronchus has a larger diameter, and is shorter than the left bronchus.'",
+                    incorrect: {
+                        1: "Left is longer and narrower.",
+                        2: "They are not equal in dimensions.",
+                        3: "There are clear differences."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 3: 'The right bronchus has a larger diameter, and is shorter than the left bronchus'"
+            },
+            {
+                id: 45,
+                question: "Right lung represents what percentage of total lung volume?",
+                options: [
+                    "44%",
+                    "50%",
+                    "56%",
+                    "60%"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'The right lung represents 56% of the total lung volume.'",
+                    incorrect: {
+                        0: "Too low percentage.",
+                        1: "Equal would be 50%, but right is larger.",
+                        3: "Too high percentage."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'The right lung represents 56% of the total lung volume'"
+            },
+            {
+                id: 46,
+                question: "How many lobes does the right lung have?",
+                options: [
+                    "1 lobe",
+                    "2 lobes",
+                    "3 lobes",
+                    "4 lobes"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states right lung has 'three lobes, a superior, middle, and inferior lobe.'",
+                    incorrect: {
+                        0: "Too few lobes.",
+                        1: "Left lung has 2 lobes.",
+                        3: "Too many lobes for human lung."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'The right lung... is composed of three lobes, a superior, middle, and inferior lobe'"
+            },
+            {
+                id: 47,
+                question: "Why does the left lung have only two lobes?",
+                options: [
+                    "Genetic variation",
+                    "Asymmetrical position of the heart",
+                    "Developmental error",
+                    "Evolutionary adaptation"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'The left lung, smaller in volume because of the asymmetrical position of the heart, has only two lobes.'",
+                    incorrect: {
+                        0: "Not genetic variation; structural accommodation.",
+                        2: "Not an error; normal adaptation.",
+                        3: "While evolutionary, specific reason is heart position."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'The left lung, smaller in volume because of the asymmetrical position of the heart, has only two lobes'"
+            },
+            {
+                id: 48,
+                question: "What encases each lung?",
+                options: [
+                    "Rib cage only",
+                    "Diaphragm",
+                    "Pleural membranes",
+                    "Pericardium"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Each lung is encased in a thin membranous sac called the pleura.'",
+                    incorrect: {
+                        0: "Rib cage surrounds but doesn't encase directly.",
+                        1: "Diaphragm is below lungs.",
+                        3: "Pericardium encases heart."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'Each lung is encased in a thin membranous sac called the pleura'"
+            },
+            {
+                id: 49,
+                question: "Pleural membranes function to:",
+                options: [
+                    "Produce surfactant",
+                    "Prevent lung collapse only",
+                    "Protect lungs, prevent air leakage, reduce friction",
+                    "Exchange gases"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'These protect the lungs, stop them leaking air into the thoracic cavity and reduce friction between the lungs and the wall of the thorax.'",
+                    incorrect: {
+                        0: "Surfactant produced by Type II pneumocytes.",
+                        1: "Multiple functions, not just prevent collapse.",
+                        3: "Gas exchange occurs in alveoli."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'These protect the lungs, stop them leaking air into the thoracic cavity and reduce friction between the lungs and the wall of the thorax'"
+            },
+            {
+                id: 50,
+                question: "Trachea is lined with:",
+                options: [
+                    "Keratinized epithelium",
+                    "Ciliated mucus membrane",
+                    "Smooth muscle only",
+                    "Cartilage rings"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Trachea is lined with ciliated mucus membrane.'",
+                    incorrect: {
+                        0: "Not keratinized; respiratory epithelium.",
+                        2: "Has smooth muscle but lining is ciliated epithelium.",
+                        3: "Cartilage provides support, not lining."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 3: 'Trachea is lined with ciliated mucus membrane'"
+            },
+
+            // 51-60: Gas Exchange and Alveoli
+            {
+                id: 51,
+                question: "Where does actual exchange of carbon dioxide and oxygen occur?",
+                options: [
+                    "Bronchi",
+                    "Bronchioles",
+                    "Alveoli",
+                    "Trachea"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Eventually the terminal bronchioles open into small collections of air sacs known as alveoli, where the actual exchange of carbon dioxide and oxygen occur.'",
+                    incorrect: {
+                        0: "Bronchi conduct air, no significant gas exchange.",
+                        1: "Bronchioles conduct air, minimal exchange in respiratory bronchioles.",
+                        3: "Trachea conducts air only."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 4: 'alveoli, where the actual exchange of carbon dioxide and oxygen occur'"
+            },
+            {
+                id: 52,
+                question: "The wall of each alveolus is only:",
+                options: [
+                    "0.1 μm thick",
+                    "1 μm thick",
+                    "10 μm thick",
+                    "100 μm thick"
+                ],
+                correctAnswer: 0,
+                explanation: {
+                    correct: "Textbook states: 'The wall of each alveolus is only 0.1 μm thick.'",
+                    incorrect: {
+                        1: "Too thick for alveolar wall.",
+                        2: "Much too thick.",
+                        3: "Extremely too thick."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'The wall of each alveolus is only 0.1 μm thick'"
+            },
+            {
+                id: 53,
+                question: "Approximately how many alveoli are present in the lungs?",
+                options: [
+                    "70 million",
+                    "300 million",
+                    "700 million",
+                    "1 billion"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'There are about 700 million alveoli present in the lungs.'",
+                    incorrect: {
+                        0: "Too few alveoli.",
+                        1: "Common misconception; textbook says 700 million.",
+                        3: "Too many alveoli."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 4: 'There are about 700 million alveoli present in the lungs'"
+            },
+            {
+                id: 54,
+                question: "Total alveolar surface area is approximately:",
+                options: [
+                    "7-9 m²",
+                    "20-30 m²",
+                    "40-50 m²",
+                    "70-90 m²"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Textbook states: 'representing approximately a total surface area of 70.90m².'",
+                    incorrect: {
+                        0: "Too small area.",
+                        1: "Too small area.",
+                        2: "Too small area."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 4: 'representing approximately a total surface area of 70.90m²'"
+            },
+            {
+                id: 55,
+                question: "What is surfactant?",
+                options: [
+                    "An enzyme for gas exchange",
+                    "A hormone regulating breathing",
+                    "A detergent-like chemical reducing surface tension",
+                    "A protein for oxygen transport"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Special cells in the alveolus wall secrete a detergent like chemical on to the inside lining of the alveolus. This is called a surfactant.'",
+                    incorrect: {
+                        0: "Not an enzyme; reduces surface tension.",
+                        1: "Not a hormone; local chemical.",
+                        3: "Not for oxygen transport; reduces surface tension."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 4: 'Special cells in the alveolus wall secrete a detergent like chemical... This is called a surfactant'"
+            },
+            {
+                id: 56,
+                question: "Surfactant function includes:",
+                options: [
+                    "Increasing surface tension",
+                    "Reducing work needed to breathe",
+                    "Carrying oxygen",
+                    "Killing all bacteria"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'It lowers the surface tension of the fluid layer lining the alveolus, and thereby reduces the amount of effort needed to breathe in and inflate the lungs.'",
+                    incorrect: {
+                        0: "Lowers, not increases surface tension.",
+                        2: "Hemoglobin carries oxygen, not surfactant.",
+                        3: "May help kill some bacteria but not primary function."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 4: 'It lowers the surface tension... and thereby reduces the amount of effort needed to breathe in and inflate the lungs'"
+            },
+            {
+                id: 57,
+                question: "Alveoli are lined with:",
+                options: [
+                    "Ciliated columnar epithelium",
+                    "Moist squamous epithelium",
+                    "Keratinized epithelium",
+                    "Transitional epithelium"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Lining each alveolus is moist squamous epithelium.'",
+                    incorrect: {
+                        0: "Ciliated epithelium in conducting airways, not alveoli.",
+                        2: "Not keratinized; simple squamous.",
+                        3: "Transitional epithelium in urinary tract."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'Lining each alveolus is moist squamous epithelium'"
+            },
+            {
+                id: 58,
+                question: "What surrounds alveoli externally?",
+                options: [
+                    "Cartilage rings",
+                    "Smooth muscle",
+                    "Dense network of blood capillaries",
+                    "Lymphatic vessels only"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'On its outsides is a dense network of blood capillaries.'",
+                    incorrect: {
+                        0: "No cartilage in alveoli.",
+                        1: "Minimal smooth muscle in alveolar ducts.",
+                        3: "Has capillaries, not just lymphatic vessels."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 5: 'On its outsides is a dense network of blood capillaries'"
+            },
+            {
+                id: 59,
+                question: "Which cells produce surfactant?",
+                options: [
+                    "Type I pneumocytes",
+                    "Type II pneumocytes",
+                    "Alveolar macrophages",
+                    "Endothelial cells"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Type II pneumocytes (septal cells) produce and secrete surfactant.",
+                    incorrect: {
+                        0: "Type I are for gas exchange, not surfactant production.",
+                        2: "Macrophages clean debris, don't produce surfactant.",
+                        3: "Endothelial cells line capillaries."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 60,
+                question: "Surfactant deficiency leads to:",
+                options: [
+                    "Asthma",
+                    "Emphysema",
+                    "Respiratory distress syndrome",
+                    "Bronchitis"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Surfactant deficiency causes respiratory distress syndrome, especially in premature infants.",
+                    incorrect: {
+                        0: "Asthma involves bronchoconstriction.",
+                        1: "Emphysema involves alveolar wall destruction.",
+                        3: "Bronchitis involves inflammation of bronchi."
+                    }
+                },
+                type: "application"
+            },
+
+            // 61-70: Gas Transport - Oxygen
+            {
+                id: 61,
+                question: "Most oxygen is transported from lungs to tissues through:",
+                options: [
+                    "Plasma dissolution",
+                    "Hemoglobin",
+                    "Myoglobin",
+                    "Bicarbonate ions"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'Most of the oxygen is transported from lungs to the tissues through haemoglobin.'",
+                    incorrect: {
+                        0: "Only small amount dissolved in plasma.",
+                        2: "Myoglobin stores oxygen in muscles.",
+                        3: "Bicarbonate transports CO₂, not O₂."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 8: 'Most of the oxygen is transported from lungs to the tissues through haemoglobin'"
+            },
+            {
+                id: 62,
+                question: "Each hemoglobin molecule can carry up to:",
+                options: [
+                    "1 oxygen molecule",
+                    "2 oxygen molecules",
+                    "4 oxygen molecules",
+                    "8 oxygen molecules"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'each haemoglobin molecule is capable of carrying up to four molecules of oxygen forming oxyhaemoglobin.'",
+                    incorrect: {
+                        0: "Too few; hemoglobin has 4 heme groups.",
+                        1: "Too few; hemoglobin has 4 heme groups.",
+                        3: "Too many; only 4 heme groups."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 8: 'each haemoglobin molecule is capable of carrying up to four molecules of oxygen'"
+            },
+            {
+                id: 63,
+                question: "Oxyhemoglobin is what color?",
+                options: [
+                    "Blue",
+                    "Purple",
+                    "Bright red",
+                    "Dark red"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Oxyhaemoglobin is a bright red-colored molecule that contributes to the bright red colour of oxygenated blood.'",
+                    incorrect: {
+                        0: "Deoxygenated blood is dark red, not blue.",
+                        1: "Not purple color.",
+                        3: "Dark red is deoxygenated blood."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 8: 'Oxyhaemoglobin is a bright red-colored molecule'"
+            },
+            {
+                id: 64,
+                question: "Hemoglobin saturation of 100% means:",
+                options: [
+                    "All hemoglobin molecules carry 4 oxygen molecules",
+                    "All heme units in all erythrocytes are bound to oxygen",
+                    "Blood is fully oxygenated",
+                    "All of the above"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "All statements are correct interpretations of 100% hemoglobin saturation.",
+                    incorrect: {
+                        0: "True but incomplete definition.",
+                        1: "True but incomplete definition.",
+                        2: "True but incomplete definition."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 65,
+                question: "Normal hemoglobin saturation ranges from:",
+                options: [
+                    "75-80%",
+                    "85-90%",
+                    "95-99%",
+                    "100% always"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'haemoglobin saturation generally ranges from 95 percent to 99 percent.'",
+                    incorrect: {
+                        0: "Too low for healthy individual.",
+                        1: "Borderline low.",
+                        3: "Rarely exactly 100% in vivo."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 9: 'haemoglobin saturation generally ranges from 95 percent to 99 percent'"
+            },
+            {
+                id: 66,
+                question: "Oxygen-hemoglobin dissociation curve shows:",
+                options: [
+                    "Linear relationship between PO₂ and saturation",
+                    "Sigmoidal (S-shaped) relationship",
+                    "Inverse relationship",
+                    "No consistent relationship"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "The curve is sigmoidal due to cooperative binding of oxygen to hemoglobin.",
+                    incorrect: {
+                        0: "Not linear; sigmoidal.",
+                        2: "Not simply inverse.",
+                        3: "There is a consistent sigmoidal relationship."
+                    }
+                },
+                type: "conceptual"
+            },
+            {
+                id: 67,
+                question: "As partial pressure of oxygen increases:",
+                options: [
+                    "Fewer oxygen molecules bind to hemoglobin",
+                    "More oxygen molecules bind to hemoglobin",
+                    "Binding remains constant",
+                    "Binding becomes random"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'as the partial pressure of oxygen increases, a proportionately greater number of oxygen molecules are bound by heme.'",
+                    incorrect: {
+                        0: "Opposite of actual relationship.",
+                        2: "Not constant; increases with PO₂.",
+                        3: "Not random; follows predictable pattern."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 9: 'as the partial pressure of oxygen increases, a proportionately greater number of oxygen molecules are bound by heme'"
+            },
+            {
+                id: 68,
+                question: "In tissues with high metabolic rate, oxygen partial pressure is about:",
+                options: [
+                    "10 mm Hg",
+                    "20 mm Hg",
+                    "40 mm Hg",
+                    "100 mm Hg"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states active tissues lower PO₂ to 'about 20 mm Hg.'",
+                    incorrect: {
+                        0: "Too low even for active tissues.",
+                        2: "Typical tissue PO₂, not highly active tissue.",
+                        3: "Arterial PO₂, not tissue PO₂."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 10: 'lowering the partial pressure of oxygen in the tissue to about 20 mm Hg'"
+            },
+            {
+                id: 69,
+                question: "Capillary partial pressure of oxygen is about:",
+                options: [
+                    "20 mm Hg",
+                    "40 mm Hg",
+                    "60 mm Hg",
+                    "100 mm Hg"
+                ],
+                correctAnswer: 3,
+                explanation: {
+                    correct: "Textbook states: 'The partial pressure of oxygen inside capillaries is about 100 mm Hg.'",
+                    incorrect: {
+                        0: "Too low for arterial end.",
+                        1: "Too low for arterial end.",
+                        2: "Too low for arterial end."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 10: 'The partial pressure of oxygen inside capillaries is about 100 mm Hg'"
+            },
+            {
+                id: 70,
+                question: "In active tissues, more oxygen dissociates from hemoglobin due to:",
+                options: [
+                    "Higher PO₂ gradient",
+                    "Lower temperature",
+                    "Higher pH",
+                    "Lower CO₂"
+                ],
+                correctAnswer: 0,
+                explanation: {
+                    correct: "Large PO₂ difference (100 mmHg in capillaries vs 20 mmHg in tissue) drives oxygen dissociation.",
+                    incorrect: {
+                        1: "Higher temperature, not lower, promotes dissociation.",
+                        2: "Lower pH (higher H⁺), not higher pH, promotes dissociation.",
+                        3: "Higher CO₂, not lower, promotes dissociation."
+                    }
+                },
+                type: "application"
+            },
+
+            // 71-80: Gas Transport - Carbon Dioxide
+            {
+                id: 71,
+                question: "Carbon dioxide is transported in blood in how many main ways?",
+                options: [
+                    "1 way",
+                    "2 ways",
+                    "3 ways",
+                    "4 ways"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Carbon dioxide is transported in the blood in three main ways.'",
+                    incorrect: {
+                        0: "Three ways, not one.",
+                        1: "Three ways, not two.",
+                        3: "Three ways, not four."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 10: 'Carbon dioxide is transported in the blood in three main ways'"
+            },
+            {
+                id: 72,
+                question: "Approximately what percentage of CO₂ is carried as bicarbonate ions?",
+                options: [
+                    "7%",
+                    "23%",
+                    "70%",
+                    "90%"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'Approximately 70% of carbon dioxide is carried in the blood as bicarbonate ions.'",
+                    incorrect: {
+                        0: "7% is dissolved in plasma.",
+                        1: "23% as carbaminohaemoglobin.",
+                        3: "Not 90%; total is 100%."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 10: 'Approximately 70% of carbon dioxide is carried in the blood as bicarbonate ions'"
+            },
+            {
+                id: 73,
+                question: "What percentage of CO₂ is carried as carbaminohaemoglobin?",
+                options: [
+                    "7%",
+                    "23%",
+                    "70%",
+                    "90%"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'About 23% of carbon dioxide is carried as carbaminohaemoglobin.'",
+                    incorrect: {
+                        0: "7% is dissolved in plasma.",
+                        2: "70% as bicarbonate ions.",
+                        3: "Not 90%."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 12: 'About 23% of carbon dioxide is carried as carbaminohaemoglobin'"
+            },
+            {
+                id: 74,
+                question: "What percentage of CO₂ is dissolved directly in plasma?",
+                options: [
+                    "7%",
+                    "23%",
+                    "70%",
+                    "90%"
+                ],
+                correctAnswer: 0,
+                explanation: {
+                    correct: "Textbook states: 'Only 7% of carbon dioxide is carried this way.' (dissolved in plasma)",
+                    incorrect: {
+                        1: "23% as carbaminohaemoglobin.",
+                        2: "70% as bicarbonate ions.",
+                        3: "Not 90%."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 12: 'Only 7% of carbon dioxide is carried this way' (dissolved in plasma)"
+            },
+            {
+                id: 75,
+                question: "The enzyme that catalyzes CO₂ + H₂O → H₂CO₃ is:",
+                options: [
+                    "ATP synthase",
+                    "Carbonic anhydrase",
+                    "Hemoglobin",
+                    "Surfactant"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook shows reaction with 'Carbonic anhydrase' as catalyst.",
+                    incorrect: {
+                        0: "ATP synthase produces ATP.",
+                        2: "Hemoglobin carries gases but doesn't catalyze this reaction.",
+                        3: "Surfactant reduces surface tension."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 10: Chemical reaction with 'Carbonic anhydrase'"
+            },
+            {
+                id: 76,
+                question: "Chloride shift is also called:",
+                options: [
+                    "Bohr effect",
+                    "Haldane effect",
+                    "Hamburger's phenomenon",
+                    "Dalton's law"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Textbook states: 'This is called the chloride shifts or Hamburger's phenomenon.'",
+                    incorrect: {
+                        0: "Bohr effect is CO₂ effect on O₂ binding.",
+                        1: "Haldane effect is O₂ effect on CO₂ binding.",
+                        3: "Dalton's law is about partial pressures."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 10: 'This is called the chloride shifts or Hamburger's phenomenon'"
+            },
+            {
+                id: 77,
+                question: "Chloride shift maintains:",
+                options: [
+                    "Oxygen levels",
+                    "Blood pressure",
+                    "Ionic balance",
+                    "pH only"
+                ],
+                correctAnswer: 2,
+                explanation: {
+                    correct: "Chloride shift maintains electrical neutrality as bicarbonate leaves RBCs.",
+                    incorrect: {
+                        0: "Doesn't directly maintain oxygen levels.",
+                        1: "Doesn't maintain blood pressure.",
+                        3: "Helps with pH but primarily ionic balance."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 78,
+                question: "CO₂ transport depends on:",
+                options: [
+                    "Partial pressure of CO₂",
+                    "Partial pressure of O₂ only",
+                    "Hemoglobin concentration only",
+                    "Blood pH only"
+                ],
+                correctAnswer: 0,
+                explanation: {
+                    correct: "Textbook states: 'Transport of CO₂ depends on the partial pressure of CO₂.'",
+                    incorrect: {
+                        1: "Depends on CO₂ partial pressure, not just O₂.",
+                        2: "Not just hemoglobin concentration.",
+                        3: "Affected by pH but depends on partial pressure."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 12: 'Transport of CO₂ depends on the partial pressure of CO₂'"
+            },
+            {
+                id: 79,
+                question: "When CO₂ partial pressure is higher in tissues than blood:",
+                options: [
+                    "CO₂ moves from blood to tissues",
+                    "CO₂ moves from tissues to blood",
+                    "No movement occurs",
+                    "Oxygen moves instead"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Gases move from higher to lower partial pressure. Higher tissue CO₂ drives CO₂ into blood.",
+                    incorrect: {
+                        0: "Opposite direction; tissues to blood.",
+                        2: "Movement does occur.",
+                        3: "Oxygen moves opposite direction."
+                    }
+                },
+                type: "application"
+            },
+            {
+                id: 80,
+                question: "In lungs, carbaminohaemoglobin:",
+                options: [
+                    "Forms more CO₂ bonds",
+                    "Releases its CO₂",
+                    "Converts to bicarbonate",
+                    "Binds more oxygen"
+                ],
+                correctAnswer: 1,
+                explanation: {
+                    correct: "Textbook states: 'When the partial pressure of CO₂ is higher in the blood than tissues as in case of lungs, carbaminohaemoglobin releases its CO₂.'",
+                    incorrect: {
+                        0: "Releases CO₂, doesn't form more bonds.",
+                        2: "Not conversion to bicarbonate; direct release.",
+                        3: "Oxygen binding is separate process."
+                    }
+                },
+                type: "textbook",
+                reference: "Page 12: 'When the partial pressure of CO₂ is higher in the blood than tissues as in case of lungs, carbaminohaemoglobin releases its CO₂'"
+            }
+        ];
+
+        // Progress tracking for all 80 MCQs
+        let progress = Array(80).fill(false);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+            
+            function initApp() {
+                // Welcome screen
+                document.getElementById('start-btn').addEventListener('click', () => {
+                    document.getElementById('welcome-overlay').classList.add('hidden');
+                });
+                
+                setTimeout(() => {
+                    document.getElementById('welcome-overlay').classList.add('hidden');
+                }, 5000);
+                
+                // Load progress
+                loadProgress();
+                
+                // Setup tabs
+                setupTabs();
+                
+                // Setup event listeners
+                setupEventListeners();
+                
+                // Load initial content
+                loadContentForTab('resp-basics');
+                
+                // Update progress
+                updateProgress();
+                
+                // Apply animations
+                applyAnimations();
+            }
+            
+            function setupTabs() {
+                const tabButtons = document.querySelectorAll('.nav-btn[data-tab]');
+                const tabContents = document.querySelectorAll('.tab-content');
+                
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabId = button.getAttribute('data-tab');
+                        
+                        // Update active tab button
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        // Show active content
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        document.getElementById(`${tabId}-tab`).classList.add('active');
+                        
+                        // Load content for this tab
+                        loadContentForTab(tabId);
+                    });
+                });
+            }
+            
+            function loadContentForTab(tabId) {
+                if (tabId === 'all-mcqs') {
+                    loadAllMCQs();
+                }
+                // Other tabs don't need MCQs loaded as they only have explanations
+            }
+            
+            function setupEventListeners() {
+                // Hamburger menu
+                document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+                
+                // Theme toggle
+                document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+                
+                // Refresh button for all MCQs
+                document.getElementById('refresh-all-mcqs')?.addEventListener('click', loadAllMCQs);
+            }
+            
+            function toggleMenu() {
+                const menuToggle = document.getElementById('menu-toggle');
+                const mainNav = document.getElementById('main-nav');
+                
+                menuToggle.classList.toggle('active');
+                mainNav.classList.toggle('active');
+            }
+            
+            function toggleTheme() {
+                const themeToggle = document.getElementById('theme-toggle');
+                document.body.classList.toggle('dark-mode');
+                themeToggle.classList.toggle('dark');
+                saveToLocalStorage('darkMode', document.body.classList.contains('dark-mode'));
+            }
+            
+            function loadAllMCQs() {
+                const container = document.getElementById('all-mcqs-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                allMCQs.forEach(mcq => {
+                    const mcqCard = createMCQCard(mcq);
+                    container.appendChild(mcqCard);
+                });
+            }
+            
+            function createMCQCard(mcq) {
+                const card = document.createElement('div');
+                card.className = 'card mcq-card fade-in';
+                card.id = `mcq-${mcq.id}`;
+                
+                const isCompleted = progress[mcq.id - 1];
+                
+                card.innerHTML = `
+                    <div class="mcq-info">
+                        <div class="mcq-id">MCQ #${mcq.id} ${isCompleted ? '<i class="fas fa-check" style="color: var(--success); margin-left: 4.05px;"></i>' : ''}
+                            <span style="font-size: 0.405rem; color: var(--text-secondary);">${mcq.type}</span>
+                        </div>
+                        <div class="mcq-question">${mcq.question}</div>
+                        <div class="mcq-options">
+                            ${mcq.options.map((option, index) => `
+                                <div class="mcq-option ${isCompleted ? 'completed' : ''}" data-option="${index}">${String.fromCharCode(65 + index)}) ${option}</div>
+                            `).join('')}
+                        </div>
+                        <div class="mcq-explanation">
+                            <div class="explanation-title">Detailed Explanation:</div>
+                            <div class="explanation-content">
+                                <p><strong>Correct Answer:</strong> ${String.fromCharCode(65 + mcq.correctAnswer)}) ${mcq.options[mcq.correctAnswer]}</p>
+                                <p><strong>Reasoning:</strong> ${mcq.explanation.correct}</p>
+                                ${mcq.reference ? `<p><strong>Textbook Reference:</strong> ${mcq.reference}</p>` : ''}
+                                <p><strong>Incorrect Options Analysis:</strong></p>
+                                <ul>
+                                    ${Object.entries(mcq.explanation.incorrect || {}).map(([index, reason]) => 
+                                        `<li><strong>${String.fromCharCode(65 + parseInt(index))})</strong> ${reason}</li>`
+                                    ).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mcq-actions">
+                        <button class="btn btn-primary check-answer-btn">
+                            <i class="fas fa-check"></i> Check Answer
+                        </button>
+                        <button class="btn btn-secondary show-explanation-btn">
+                            <i class="fas fa-lightbulb"></i> Show Explanation
+                        </button>
+                    </div>
+                `;
+                
+                setupMCQEventListeners(card, mcq);
+                
+                return card;
+            }
+            
+            function setupMCQEventListeners(card, mcq) {
+                const checkAnswerBtn = card.querySelector('.check-answer-btn');
+                const showExplanationBtn = card.querySelector('.show-explanation-btn');
+                const options = card.querySelectorAll('.mcq-option');
+                const isCompleted = progress[mcq.id - 1];
+                
+                let selectedOption = null;
+                
+                if (isCompleted) {
+                    const correctOption = card.querySelector(`.mcq-option[data-option="${mcq.correctAnswer}"]`);
+                    correctOption.classList.add('correct');
+                    
+                    options.forEach(option => {
+                        option.style.pointerEvents = 'none';
+                    });
+                    
+                    checkAnswerBtn.disabled = true;
+                    checkAnswerBtn.innerHTML = '<i class="fas fa-check"></i> Completed';
+                } else {
+                    options.forEach(option => {
+                        option.addEventListener('click', () => {
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            option.classList.add('selected');
+                            selectedOption = parseInt(option.getAttribute('data-option'));
+                        });
+                    });
+                    
+                    checkAnswerBtn.addEventListener('click', () => {
+                        if (selectedOption === null) {
+                            alert('Please select an answer first!');
+                            return;
+                        }
+                        
+                        options.forEach(option => {
+                            option.classList.remove('correct', 'incorrect');
+                        });
+                        
+                        const correctOption = card.querySelector(`.mcq-option[data-option="${mcq.correctAnswer}"]`);
+                        correctOption.classList.add('correct');
+                        
+                        if (selectedOption !== mcq.correctAnswer) {
+                            const selectedOptionElement = card.querySelector(`.mcq-option[data-option="${selectedOption}"]`);
+                            selectedOptionElement.classList.add('incorrect');
+                        } else {
+                            progress[mcq.id - 1] = true;
+                            saveProgress();
+                            updateProgress();
+                            
+                            const mcqId = card.querySelector('.mcq-id');
+                            mcqId.innerHTML = `MCQ #${mcq.id} <i class="fas fa-check" style="color: var(--success); margin-left: 4.05px;"></i>`;
+                            
+                            options.forEach(option => {
+                                option.style.pointerEvents = 'none';
+                            });
+                            
+                            checkAnswerBtn.disabled = true;
+                            checkAnswerBtn.innerHTML = '<i class="fas fa-check"></i> Completed';
+                        }
+                    });
+                }
+                
+                showExplanationBtn.addEventListener('click', () => {
+                    const explanation = card.querySelector('.mcq-explanation');
+                    explanation.classList.toggle('show');
+                });
+            }
+            
+            function updateProgress() {
+                const completed = progress.filter(Boolean).length;
+                const total = progress.length;
+                
+                // Update stats panel
+                document.getElementById('completed-mcqs').textContent = completed;
+                
+                // Update all MCQs tab progress
+                const allMCQsCompleted = document.getElementById('all-mcqs-completed');
+                const allMCQsProgress = document.getElementById('all-mcqs-progress');
+                
+                if (allMCQsCompleted) {
+                    allMCQsCompleted.textContent = completed;
+                }
+                if (allMCQsProgress) {
+                    allMCQsProgress.style.width = `${(completed / total) * 100}%`;
+                }
+            }
+            
+            function saveProgress() {
+                saveToLocalStorage('respirationProgress', progress);
+            }
+            
+            function loadProgress() {
+                const savedProgress = getFromLocalStorage('respirationProgress');
+                if (savedProgress) {
+                    progress = savedProgress;
+                }
+            }
+            
+            function applyAnimations() {
+                const elements = document.querySelectorAll('.panel, .card, .nav-btn');
+                
+                elements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.classList.add('fade-in');
+                    }, index * 50);
+                });
+            }
+            
+            function saveToLocalStorage(key, value) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {
+                    console.error('Error saving to localStorage:', e);
+                }
+            }
+            
+            function getFromLocalStorage(key) {
+                try {
+                    const value = localStorage.getItem(key);
+                    return value ? JSON.parse(value) : null;
+                } catch (e) {
+                    console.error('Error reading from localStorage:', e);
+                    return null;
+                }
+            }
+            
+            // Load dark mode setting
+            const darkMode = getFromLocalStorage('darkMode');
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').classList.add('dark');
+            }
+        });
+    </script>
+</body>
+</html>
